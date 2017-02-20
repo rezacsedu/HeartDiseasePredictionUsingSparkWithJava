@@ -1,4 +1,4 @@
-# HeartDiseasePredictionUsingSparkWithJava
+# Heart Disease Prediction Using Spark 2.0 With Java
 
 Source code: 
 Use three Java files that predict heart disease for Cleveland dataset. There are three implementations of the algorithm: 
