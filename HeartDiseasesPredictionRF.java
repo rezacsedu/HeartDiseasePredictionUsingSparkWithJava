@@ -13,7 +13,6 @@ import org.apache.spark.mllib.tree.RandomForest;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 import org.apache.spark.rdd.RDD;
 import org.apache.spark.sql.SparkSession;
-import com.example.SparkSession.UtilityForSparkSession;
 import scala.Tuple2;
 
 /*
@@ -37,7 +36,6 @@ public class HeartDiseasesPredictionRF {
 		RDD<String> linesRDD = spark.sparkContext().textFile(input, 2);
 				
 		JavaRDD<LabeledPoint> data = linesRDD.toJavaRDD().map(new Function<String, LabeledPoint>() {
-			@Override
 			public LabeledPoint call(String row) throws Exception {
 				String line = row.replaceAll("\\?", "999999.0");
 				String[] tokens = line.split(",");
@@ -76,19 +74,24 @@ public class HeartDiseasesPredictionRF {
 		
 		//Save the model for future use
 		long model_saving_start = System.currentTimeMillis();
-		String model_storage_loc = "models/heartdiseasesRandomForestModel";	
-		model.save(spark.sparkContext(), model_storage_loc);
+		//String model_storage_loc = "models/heartdiseasesRandomForestModel";	
+		//model.save(spark.sparkContext(), model_storage_loc);
 		long model_saving_end = System.currentTimeMillis();
 		System.out.println("Model saving time: " + (model_saving_end - model_saving_start)+" ms");
 		//
-		RandomForestModel model2 = RandomForestModel.load(spark.sparkContext(), model_storage_loc);
+		//final RandomForestModel model2 = RandomForestModel.load(spark.sparkContext(), model_storage_loc);
 		
 	      //Calculate the prediction on test set
 	      JavaPairRDD<Double, Double> predictionAndLabel =
-	        data.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
-	          @Override
+	    		  test.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
+	          /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+			@Override
 	          public Tuple2<Double, Double> call(LabeledPoint p) {
-	            return new Tuple2<>(model2.predict(p.features()), p.label());
+	            return new Tuple2<>(model.predict(p.features()), p.label());
 	          }
 	        });
 	      
