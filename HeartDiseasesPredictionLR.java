@@ -11,7 +11,6 @@ import org.apache.spark.mllib.regression.LinearRegressionModel;
 import org.apache.spark.mllib.regression.LinearRegressionWithSGD;
 import org.apache.spark.rdd.RDD;
 import org.apache.spark.sql.SparkSession;
-import com.example.SparkSession.UtilityForSparkSession;
 import scala.Tuple2;
 
 /*
@@ -58,9 +57,7 @@ public class HeartDiseasesPredictionLR {
 		long split_seed = 12345L;
 		JavaRDD<LabeledPoint>[] split = data.randomSplit(weights, split_seed);
 		JavaRDD<LabeledPoint> training = split[0];
-		JavaRDD<LabeledPoint> test = split[1];
-		
-		
+		JavaRDD<LabeledPoint> test = split[1];	
 
 		//////////////////////////LinearRegressionModel model 0.0% accuracy///////////////////////
 		final double stepSize = 0.0000000009;
@@ -77,8 +74,7 @@ public class HeartDiseasesPredictionLR {
 		model.save(spark.sparkContext(), model_storage_loc);
 		long model_saving_end = System.currentTimeMillis();
 		System.out.println("Model saving time: " + (model_saving_end - model_saving_start)+" ms");
-		LinearRegressionModel model2 = LinearRegressionModel.load(spark.sparkContext(), model_storage_loc);
-		
+		LinearRegressionModel model2 = LinearRegressionModel.load(spark.sparkContext(), model_storage_loc);		
 		
 		///Evaluate the model
 		JavaPairRDD<Double, Double> predictionAndLabel =
@@ -95,10 +91,8 @@ public class HeartDiseasesPredictionLR {
 				          return pl._1().equals(pl._2());
 				        }
 				      }).count() / (double) test.count();
-			System.out.println("Accuracy of the classification: "+accuracy);
-			
+			System.out.println("Accuracy of the classification: "+accuracy);			
 		spark.stop();
 	}
-	
 	
 }
