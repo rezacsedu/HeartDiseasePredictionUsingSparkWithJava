@@ -11,7 +11,6 @@ import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.rdd.RDD;
 import org.apache.spark.sql.SparkSession;
-import com.example.SparkSession.UtilityForSparkSession;
 import scala.Tuple2;
 
 /*
@@ -43,6 +42,11 @@ public class HeartDiseasesPredictionNB {
 		 */
 
 		JavaRDD<LabeledPoint> data = linesRDD.toJavaRDD().map(new Function<String, LabeledPoint>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public LabeledPoint call(String row) throws Exception {
 				String line = row.replaceAll("\\?", "999999.0");
